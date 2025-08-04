@@ -67,37 +67,42 @@
                        class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
             </div>
             
-            <div class="mb-6">
+            <div class="mb-4">
                 <label for="interestRate" class="block text-xs text-gray-500 mb-1">loan interest rate (% per year)</label>
                 <input type="number" id="interestRate" name="interestRate" step="0.1" min="0" value="2"
+                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            </div>
+            
+            <div class="mb-6">
+                <label for="yearlyService" class="block text-xs text-gray-500 mb-1">yearly service costs</label>
+                <input type="text" id="yearlyService" name="yearlyService" required value="5 000" inputmode="numeric"
                        class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
             </div>
             
         </form>
         
         <div id="results" class="hidden">
-            <p class="mb-4 text-xl font-medium">total monthly cost: <span id="totalMonthlyCost">0,00 SEK</span></p>
+            <p class="mb-4 text-xl font-medium">total monthly cost: <span id="totalMonthlyCost">0 SEK</span></p>
             
             <button type="button" id="toggleDetails" class="text-sm text-gray-600 underline hover:no-underline mb-4">
                 show details
             </button>
             
             <div id="details" class="hidden">
-                <p class="mb-2 text-sm">monthly depreciation: <span id="monthlyDepreciation">0,00 SEK</span></p>
-                <p class="mb-2 text-sm">monthly interest cost: <span id="monthlyInterestCost">0,00 SEK</span></p>
-                <p class="mb-2 text-sm">monthly tax: <span id="displayMonthlyTax">0,00 SEK</span></p>
-                <p class="mb-2 text-sm">monthly insurance: <span id="displayMonthlyInsurance">0,00 SEK</span></p>
+                <p class="mb-2 text-sm">monthly depreciation: <span id="monthlyDepreciation">0 SEK</span></p>
+                <p class="mb-2 text-sm">monthly interest cost: <span id="monthlyInterestCost">0 SEK</span></p>
+                <p class="mb-2 text-sm">monthly tax: <span id="displayMonthlyTax">0 SEK</span></p>
+                <p class="mb-2 text-sm">monthly insurance: <span id="displayMonthlyInsurance">0 SEK</span></p>
+                <p class="mb-2 text-sm">monthly service: <span id="displayMonthlyService">0 SEK</span></p>
             </div>
         </div>
     </div>
 
     <script>
         function formatSwedishNumber(num) {
-            if (isNaN(num) || num === 0) return '0,00';
-            const formatted = num.toFixed(2);
-            const [whole, decimal] = formatted.split('.');
-            const wholeFormatted = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-            return wholeFormatted + ',' + decimal;
+            if (isNaN(num) || num === 0) return '0';
+            const rounded = Math.round(num);
+            return rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
         }
         
         function calculateCosts() {
@@ -107,6 +112,7 @@
             const ownershipYears = parseFloat(document.getElementById('ownershipYears').value) || 1;
             const retainedValuePercent = parseFloat(document.getElementById('retainedValue').value) || 0;
             const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const yearlyService = parseFloat(document.getElementById('yearlyService').value.replace(/\s/g, '')) || 0;
             
             if (carPrice > 0) {
                 const totalMonths = ownershipYears * 12;
@@ -119,12 +125,16 @@
                 // Calculate monthly interest cost (simple interest)
                 const monthlyInterestCost = (carPrice * (interestRate / 100)) / 12;
                 
-                const totalMonthlyCost = monthlyDepreciation + monthlyInterestCost + monthlyTax + monthlyInsurance;
+                // Calculate monthly service cost
+                const monthlyService = yearlyService / 12;
+                
+                const totalMonthlyCost = monthlyDepreciation + monthlyInterestCost + monthlyTax + monthlyInsurance + monthlyService;
                 
                 document.getElementById('monthlyDepreciation').textContent = formatSwedishNumber(monthlyDepreciation) + ' SEK';
                 document.getElementById('monthlyInterestCost').textContent = formatSwedishNumber(monthlyInterestCost) + ' SEK';
                 document.getElementById('displayMonthlyTax').textContent = formatSwedishNumber(monthlyTax) + ' SEK';
                 document.getElementById('displayMonthlyInsurance').textContent = formatSwedishNumber(monthlyInsurance) + ' SEK';
+                document.getElementById('displayMonthlyService').textContent = formatSwedishNumber(monthlyService) + ' SEK';
                 document.getElementById('totalMonthlyCost').textContent = formatSwedishNumber(totalMonthlyCost) + ' SEK';
                 
                 document.getElementById('results').classList.remove('hidden');
@@ -183,6 +193,10 @@
         });
         
         document.getElementById('monthlyInsurance').addEventListener('input', function() {
+            formatNumberInput(this);
+            calculateCosts();
+        });
+        document.getElementById('yearlyService').addEventListener('input', function() {
             formatNumberInput(this);
             calculateCosts();
         });
