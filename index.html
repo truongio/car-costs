@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Cost Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnected" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['EB Garamond', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="font-serif bg-white text-black flex h-screen justify-center lg:justify-start items-start">
+    <div class="pt-40 pb-8 px-4 lg:pt-80 lg:pr-80 lg:px-8 m-auto max-w-[1096px]">
+        
+        <h1 class="text-4xl font-normal mb-8 text-left">car cost calculator</h1>
+        
+        <form id="carCostForm" class="mb-8">
+            <div class="mb-4">
+                <label for="carPrice" class="block text-xs text-gray-500 mb-1">car price</label>
+                <input type="text" id="carPrice" name="carPrice" required inputmode="numeric"
+                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            </div>
+            
+            <div class="mb-4">
+                <label for="monthlyTax" class="block text-xs text-gray-500 mb-1">monthly tax</label>
+                <input type="text" id="monthlyTax" name="monthlyTax" required value="30" inputmode="numeric"
+                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            </div>
+            
+            <div class="mb-4">
+                <label for="monthlyInsurance" class="block text-xs text-gray-500 mb-1">monthly insurance</label>
+                <input type="text" id="monthlyInsurance" name="monthlyInsurance" required value="1 000" inputmode="numeric"
+                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            </div>
+            
+            <div class="mb-4">
+                <label for="ownershipYears" class="block text-xs text-gray-500 mb-1">ownership duration (years)</label>
+                <input type="number" id="ownershipYears" name="ownershipYears" required min="1" value="3"
+                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            </div>
+            
+            <div class="mb-4">
+                <label for="retainedValue" class="block text-xs text-gray-500 mb-1">retained value (%)</label>
+                <input type="number" id="retainedValue" name="retainedValue" required min="0" max="100" value="50"
+                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            </div>
+            
+            <div class="mb-6">
+                <label for="interestRate" class="block text-xs text-gray-500 mb-1">loan interest rate (% per year)</label>
+                <input type="number" id="interestRate" name="interestRate" step="0.1" min="0" value="2"
+                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            </div>
+            
+        </form>
+        
+        <div id="results" class="hidden">
+            <p class="mb-4 text-xl font-medium">total monthly cost: <span id="totalMonthlyCost">0,00 SEK</span></p>
+            
+            <button type="button" id="toggleDetails" class="text-sm text-gray-600 underline hover:no-underline mb-4">
+                show details
+            </button>
+            
+            <div id="details" class="hidden">
+                <p class="mb-2 text-sm">monthly depreciation: <span id="monthlyDepreciation">0,00 SEK</span></p>
+                <p class="mb-2 text-sm">monthly interest cost: <span id="monthlyInterestCost">0,00 SEK</span></p>
+                <p class="mb-2 text-sm">monthly tax: <span id="displayMonthlyTax">0,00 SEK</span></p>
+                <p class="mb-2 text-sm">monthly insurance: <span id="displayMonthlyInsurance">0,00 SEK</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatSwedishNumber(num) {
+            if (isNaN(num) || num === 0) return '0,00';
+            const formatted = num.toFixed(2);
+            const [whole, decimal] = formatted.split('.');
+            const wholeFormatted = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+            return wholeFormatted + ',' + decimal;
+        }
+        
+        function calculateCosts() {
+            const carPrice = parseFloat(document.getElementById('carPrice').value.replace(/\s/g, '')) || 0;
+            const monthlyTax = parseFloat(document.getElementById('monthlyTax').value.replace(/\s/g, '')) || 0;
+            const monthlyInsurance = parseFloat(document.getElementById('monthlyInsurance').value.replace(/\s/g, '')) || 0;
+            const ownershipYears = parseFloat(document.getElementById('ownershipYears').value) || 1;
+            const retainedValuePercent = parseFloat(document.getElementById('retainedValue').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            
+            if (carPrice > 0) {
+                const totalMonths = ownershipYears * 12;
+                const retainedValue = carPrice * (retainedValuePercent / 100);
+                
+                // Calculate monthly depreciation
+                const totalDepreciation = carPrice - retainedValue;
+                const monthlyDepreciation = totalDepreciation / totalMonths;
+                
+                // Calculate monthly interest cost (simple interest)
+                const monthlyInterestCost = (carPrice * (interestRate / 100)) / 12;
+                
+                const totalMonthlyCost = monthlyDepreciation + monthlyInterestCost + monthlyTax + monthlyInsurance;
+                
+                document.getElementById('monthlyDepreciation').textContent = formatSwedishNumber(monthlyDepreciation) + ' SEK';
+                document.getElementById('monthlyInterestCost').textContent = formatSwedishNumber(monthlyInterestCost) + ' SEK';
+                document.getElementById('displayMonthlyTax').textContent = formatSwedishNumber(monthlyTax) + ' SEK';
+                document.getElementById('displayMonthlyInsurance').textContent = formatSwedishNumber(monthlyInsurance) + ' SEK';
+                document.getElementById('totalMonthlyCost').textContent = formatSwedishNumber(totalMonthlyCost) + ' SEK';
+                
+                document.getElementById('results').classList.remove('hidden');
+            } else {
+                document.getElementById('results').classList.add('hidden');
+            }
+        }
+        
+        function formatNumberInput(input) {
+            let cursorPos = input.selectionStart;
+            let oldValue = input.value;
+            let value = input.value.replace(/\s/g, '');
+            
+            // Only allow digits
+            value = value.replace(/[^\d]/g, '');
+            
+            if (value) {
+                let formatted = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                
+                // If we're typing at the end, keep cursor at end
+                if (cursorPos >= oldValue.length) {
+                    input.value = formatted;
+                    input.setSelectionRange(formatted.length, formatted.length);
+                } else {
+                    // Count digits before cursor position in original value
+                    let digitsBefore = oldValue.substring(0, cursorPos).replace(/[^\d]/g, '').length;
+                    input.value = formatted;
+                    
+                    // Find new cursor position after digitsBefore digits
+                    let newPos = 0;
+                    let digitsFound = 0;
+                    
+                    for (let i = 0; i < formatted.length; i++) {
+                        if (/\d/.test(formatted[i])) {
+                            digitsFound++;
+                            if (digitsFound === digitsBefore) {
+                                newPos = i + 1;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    input.setSelectionRange(newPos, newPos);
+                }
+            }
+        }
+
+        document.getElementById('carPrice').addEventListener('input', function() {
+            formatNumberInput(this);
+            calculateCosts();
+        });
+        
+        document.getElementById('monthlyTax').addEventListener('input', function() {
+            formatNumberInput(this);
+            calculateCosts();
+        });
+        
+        document.getElementById('monthlyInsurance').addEventListener('input', function() {
+            formatNumberInput(this);
+            calculateCosts();
+        });
+        document.getElementById('ownershipYears').addEventListener('input', calculateCosts);
+        document.getElementById('retainedValue').addEventListener('input', calculateCosts);
+        document.getElementById('interestRate').addEventListener('input', calculateCosts);
+        
+        document.getElementById('toggleDetails').addEventListener('click', function() {
+            const details = document.getElementById('details');
+            const button = document.getElementById('toggleDetails');
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                button.textContent = 'hide details';
+            } else {
+                details.classList.add('hidden');
+                button.textContent = 'show details';
+            }
+        });
+        
+        document.getElementById('carCostForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+        });
+    </script>
+</body>
+</html>
