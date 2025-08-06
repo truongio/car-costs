@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[PAGE_TITLE]</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['EB Garamond', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-serif bg-white text-black flex h-screen justify-center items-center">
+    <div class="pt-60 pb-8 px-8 lg:p-0 m-auto max-w-[1096px]">
+        <a href="../index.html" class="inline-block mb-8 text-gray-600 no-underline text-base hover:text-black">← back</a>
+        
+        <h1 class="text-4xl font-normal mb-8 text-left">[PAGE_HEADING]</h1>
+        
+        <ul class="list-disc ml-6 mb-8">
+            <li class="mb-2">[LIST_ITEM_1]</li>
+            <li class="mb-2">[LIST_ITEM_2]</li>
+            <li class="mb-2">[LIST_ITEM_3]</li>
+            <li class="mb-2">[LIST_ITEM_4]</li>
+        </ul>
+        
+        <h2 class="text-xl font-medium mb-4 mt-8">[SECTION_HEADING]</h2>
+        <ul class="list-disc ml-6 mb-8">
+            <li class="mb-2">[SUB_ITEM_1]</li>
+            <li class="mb-2">[SUB_ITEM_2]</li>
+            <li class="mb-2">[SUB_ITEM_3]</li>
+        </ul>
+        
+        <p class="mb-4">[PARAGRAPH_1]</p>
+        
+        <p class="mb-4">[PARAGRAPH_2]</p>
+        
+        <p class="mb-4">[PARAGRAPH_3]</p>
+        
+        <p class="mb-4">[PARAGRAPH_4]</p>
+    </div>
+</body>
+</html>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Cost Calculator</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffffff'/%3E%3Cpath d='M20 40h60l-10 20H30z' fill='%23333'/%3E%3Ccircle cx='30' cy='70' r='8' fill='%23333'/%3E%3Ccircle cx='70' cy='70' r='8' fill='%23333'/%3E%3Cpath d='M25 40V30a10 10 0 0 1 10-10h30a10 10 0 0 1 10 10v10' stroke='%23333' stroke-width='3' fill='none'/%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnected" href="https://fonts.gstatic.com" crossorigin>
@@ -37,63 +38,73 @@
         <h1 class="text-4xl font-normal mb-8 text-left">car cost calculator</h1>
         
         <form id="carCostForm" class="mb-8">
-            <div class="mb-4">
+            <div class="mb-3">
                 <label for="carPrice" class="block text-xs text-gray-500 mb-1">car price</label>
                 <input type="text" id="carPrice" name="carPrice" required inputmode="numeric"
-                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+                       class="text-xl border-none outline-none bg-transparent">
+                <span class="text-xl text-gray-400 ml-1">kr</span>
             </div>
             
-            <div class="mb-4">
+            <div class="mb-3">
                 <label for="monthlyTax" class="block text-xs text-gray-500 mb-1">monthly tax</label>
                 <input type="text" id="monthlyTax" name="monthlyTax" required value="30" inputmode="numeric"
-                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+                       class="text-xl border-none outline-none bg-transparent">
+                <span class="text-xl text-gray-400 ml-1">kr</span>
             </div>
             
-            <div class="mb-4">
+            <div class="mb-3">
                 <label for="monthlyInsurance" class="block text-xs text-gray-500 mb-1">monthly insurance</label>
                 <input type="text" id="monthlyInsurance" name="monthlyInsurance" required value="1 000" inputmode="numeric"
-                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+                       class="text-xl border-none outline-none bg-transparent">
+                <span class="text-xl text-gray-400 ml-1">kr</span>
             </div>
             
-            <div class="mb-4">
-                <label for="ownershipYears" class="block text-xs text-gray-500 mb-1">ownership duration (years)</label>
-                <input type="number" id="ownershipYears" name="ownershipYears" required min="1" value="3"
-                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            <div class="mb-3">
+                <label for="ownershipYears" class="block text-xs text-gray-500 mb-1">ownership duration</label>
+                <input type="text" id="ownershipYears" name="ownershipYears" required value="3" inputmode="numeric"
+                       class="text-xl border-none outline-none bg-transparent">
+                <span class="text-xl text-gray-400 ml-1">years</span>
             </div>
             
-            <div class="mb-4">
-                <label for="retainedValue" class="block text-xs text-gray-500 mb-1">retained value (%)</label>
-                <input type="number" id="retainedValue" name="retainedValue" required min="0" max="100" value="50"
-                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            <div class="mb-3">
+                <label for="retainedValue" class="block text-xs text-gray-500 mb-1">retained value</label>
+                <input type="text" id="retainedValue" name="retainedValue" required value="50" inputmode="numeric"
+                       class="text-xl border-none outline-none bg-transparent">
+                <span class="text-xl text-gray-400 ml-1">%</span>
             </div>
             
-            <div class="mb-4">
-                <label for="interestRate" class="block text-xs text-gray-500 mb-1">loan interest rate (% per year)</label>
-                <input type="number" id="interestRate" name="interestRate" step="0.1" min="0" value="2"
-                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+            <div class="mb-3">
+                <label for="interestRate" class="block text-xs text-gray-500 mb-1">loan interest rate</label>
+                <input type="text" id="interestRate" name="interestRate" required value="2" inputmode="numeric"
+                       class="text-xl border-none outline-none bg-transparent">
+                <span class="text-xl text-gray-400 ml-1">%</span>
             </div>
             
             <div class="mb-6">
                 <label for="yearlyService" class="block text-xs text-gray-500 mb-1">yearly service costs</label>
                 <input type="text" id="yearlyService" name="yearlyService" required value="5 000" inputmode="numeric"
-                       class="w-full text-xl border-none outline-none bg-transparent border-b border-gray-300 focus:border-black pb-1">
+                       class="text-xl border-none outline-none bg-transparent">
+                <span class="text-xl text-gray-400 ml-1">kr</span>
             </div>
             
         </form>
         
         <div id="results" class="hidden">
-            <p class="mb-4 text-xl font-medium">total monthly cost: <span id="totalMonthlyCost">0 SEK</span></p>
+            <div class="border border-gray-200 rounded-lg p-6 text-center mb-3">
+                <div class="text-sm text-gray-500 mb-1">total monthly cost</div>
+                <div id="totalMonthlyCost" class="text-4xl font-normal">0 SEK</div>
+            </div>
             
             <button type="button" id="toggleDetails" class="text-sm text-gray-600 underline hover:no-underline mb-4">
                 show details
             </button>
             
             <div id="details" class="hidden">
-                <p class="mb-2 text-sm">monthly depreciation: <span id="monthlyDepreciation">0 SEK</span></p>
-                <p class="mb-2 text-sm">monthly interest cost: <span id="monthlyInterestCost">0 SEK</span></p>
-                <p class="mb-2 text-sm">monthly tax: <span id="displayMonthlyTax">0 SEK</span></p>
-                <p class="mb-2 text-sm">monthly insurance: <span id="displayMonthlyInsurance">0 SEK</span></p>
-                <p class="mb-2 text-sm">monthly service: <span id="displayMonthlyService">0 SEK</span></p>
+                <p class="mb-2 text-sm">depreciation: <span id="monthlyDepreciation">0 kr</span></p>
+                <p class="mb-2 text-sm">interest cost: <span id="monthlyInterestCost">0 kr</span></p>
+                <p class="mb-2 text-sm">tax: <span id="displayMonthlyTax">0 kr</span></p>
+                <p class="mb-2 text-sm">insurance: <span id="displayMonthlyInsurance">0 kr</span></p>
+                <p class="mb-2 text-sm">service: <span id="displayMonthlyService">0 kr</span></p>
             </div>
         </div>
     </div>
@@ -114,7 +125,10 @@
             const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
             const yearlyService = parseFloat(document.getElementById('yearlyService').value.replace(/\s/g, '')) || 0;
             
-            if (carPrice > 0) {
+            // Check if we have meaningful inputs for all required fields
+            const hasAllInputs = carPrice > 0 && monthlyTax >= 0 && monthlyInsurance >= 0 && ownershipYears > 0 && yearlyService >= 0;
+            
+            if (hasAllInputs) {
                 const totalMonths = ownershipYears * 12;
                 const retainedValue = carPrice * (retainedValuePercent / 100);
                 
@@ -130,11 +144,11 @@
                 
                 const totalMonthlyCost = monthlyDepreciation + monthlyInterestCost + monthlyTax + monthlyInsurance + monthlyService;
                 
-                document.getElementById('monthlyDepreciation').textContent = formatSwedishNumber(monthlyDepreciation) + ' SEK';
-                document.getElementById('monthlyInterestCost').textContent = formatSwedishNumber(monthlyInterestCost) + ' SEK';
-                document.getElementById('displayMonthlyTax').textContent = formatSwedishNumber(monthlyTax) + ' SEK';
-                document.getElementById('displayMonthlyInsurance').textContent = formatSwedishNumber(monthlyInsurance) + ' SEK';
-                document.getElementById('displayMonthlyService').textContent = formatSwedishNumber(monthlyService) + ' SEK';
+                document.getElementById('monthlyDepreciation').textContent = formatSwedishNumber(monthlyDepreciation) + ' kr';
+                document.getElementById('monthlyInterestCost').textContent = formatSwedishNumber(monthlyInterestCost) + ' kr';
+                document.getElementById('displayMonthlyTax').textContent = formatSwedishNumber(monthlyTax) + ' kr';
+                document.getElementById('displayMonthlyInsurance').textContent = formatSwedishNumber(monthlyInsurance) + ' kr';
+                document.getElementById('displayMonthlyService').textContent = formatSwedishNumber(monthlyService) + ' kr';
                 document.getElementById('totalMonthlyCost').textContent = formatSwedishNumber(totalMonthlyCost) + ' SEK';
                 
                 document.getElementById('results').classList.remove('hidden');
