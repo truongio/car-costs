@@ -93,21 +93,28 @@
 <body class="font-sans bg-offwhite text-black min-h-screen flex flex-col items-center py-12 px-4 selection:bg-black selection:text-white">
     
     <div class="w-full max-w-2xl">
-        <header class="mb-16 border-b border-black pb-6 reveal-text" style="animation-delay: 0.1s;">
+        <header class="mb-10 border-b border-black pb-6 reveal-text" style="animation-delay: 0.1s;">
             <h1 class="font-serif text-5xl md:text-6xl text-black tracking-tight leading-none">
                 Car Cost <br/>
                 <span class="italic text-gray-500">Calculator</span>
             </h1>
         </header>
         
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-12 text-xs font-sans font-medium uppercase tracking-widest text-gray-400 reveal-text" style="animation-delay: 0.15s;">
+            <span>Examples:</span>
+            <button onclick="loadPreset('tesla-y')" class="hover:text-black transition-colors">Tesla Model Y</button>
+            <button onclick="loadPreset('volvo-xc60')" class="hover:text-black transition-colors">Volvo XC60</button>
+            <button onclick="loadPreset('tesla-3')" class="hover:text-black transition-colors">Tesla Model 3</button>
+        </div>
+        
         <form id="carCostForm" class="space-y-12 mb-16">
             <!-- Primary Input -->
             <div class="input-container pb-2 reveal-text" style="animation-delay: 0.2s;">
-                <label for="carPrice" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Vehicle Price</label>
+                <label for="carPrice" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Vehicle Purchase Price</label>
                 <div class="flex items-baseline group">
                     <input type="text" id="carPrice" name="carPrice" required inputmode="numeric" placeholder="0"
-                           class="font-serif w-full text-5xl md:text-6xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0 transition-colors">
-                    <span class="font-serif text-3xl md:text-4xl text-gray-400 ml-3 italic">kr</span>
+                           class="font-serif w-auto min-w-[1ch] text-5xl md:text-6xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0 transition-colors">
+                    <span class="font-serif text-3xl md:text-4xl text-gray-400 ml-3 italic relative -top-1">kr</span>
                 </div>
                 <div class="input-line"></div>
             </div>
@@ -115,40 +122,40 @@
             <!-- Secondary Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
                 <div class="input-container pb-2 reveal-text" style="animation-delay: 0.3s;">
-                    <label for="monthlyTax" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Monthly Tax</label>
+                    <label for="monthlyTax" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Tax per Month</label>
                     <div class="flex items-baseline">
                         <input type="text" id="monthlyTax" name="monthlyTax" required value="30" inputmode="numeric"
-                               class="font-serif w-full text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
+                               class="font-serif w-auto min-w-[1ch] text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
                         <span class="font-serif text-xl text-gray-400 ml-2 italic">kr</span>
                     </div>
                     <div class="input-line"></div>
                 </div>
                 
                 <div class="input-container pb-2 reveal-text" style="animation-delay: 0.35s;">
-                    <label for="monthlyInsurance" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Insurance / Month</label>
+                    <label for="monthlyInsurance" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Insurance per Month</label>
                     <div class="flex items-baseline">
                         <input type="text" id="monthlyInsurance" name="monthlyInsurance" required value="1 000" inputmode="numeric"
-                               class="font-serif w-full text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
+                               class="font-serif w-auto min-w-[1ch] text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
                         <span class="font-serif text-xl text-gray-400 ml-2 italic">kr</span>
                     </div>
                     <div class="input-line"></div>
                 </div>
 
                  <div class="input-container pb-2 reveal-text" style="animation-delay: 0.4s;">
-                    <label for="ownershipYears" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Ownership Duration</label>
+                    <label for="ownershipYears" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Ownership Period</label>
                     <div class="flex items-baseline">
                         <input type="text" id="ownershipYears" name="ownershipYears" required value="3" inputmode="numeric"
-                               class="font-serif w-full text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
+                               class="font-serif w-auto min-w-[1ch] text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
                         <span class="font-serif text-xl text-gray-400 ml-2 italic">years</span>
                     </div>
                     <div class="input-line"></div>
                 </div>
                 
                 <div class="input-container pb-2 reveal-text" style="animation-delay: 0.45s;">
-                    <label for="retainedValue" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Retained Value</label>
+                    <label for="retainedValue" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Residual Value</label>
                     <div class="flex items-baseline">
                         <input type="text" id="retainedValue" name="retainedValue" required value="50" inputmode="numeric"
-                               class="font-serif w-full text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
+                               class="font-serif w-auto min-w-[1ch] text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
                         <span class="font-serif text-xl text-gray-400 ml-2 italic">%</span>
                     </div>
                     <div class="input-line"></div>
@@ -158,17 +165,17 @@
                     <label for="interestRate" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Interest Rate</label>
                     <div class="flex items-baseline">
                         <input type="text" id="interestRate" name="interestRate" required value="2" inputmode="numeric"
-                               class="font-serif w-full text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
+                               class="font-serif w-auto min-w-[1ch] text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
                         <span class="font-serif text-xl text-gray-400 ml-2 italic">%</span>
                     </div>
                     <div class="input-line"></div>
                 </div>
                 
                 <div class="input-container pb-2 reveal-text" style="animation-delay: 0.55s;">
-                    <label for="yearlyService" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Yearly Service</label>
+                    <label for="yearlyService" class="block font-sans text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Service Cost per Year</label>
                     <div class="flex items-baseline">
                         <input type="text" id="yearlyService" name="yearlyService" required value="5 000" inputmode="numeric"
-                               class="font-serif w-full text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
+                               class="font-serif w-auto min-w-[1ch] text-3xl text-black placeholder-gray-200 border-none outline-none bg-transparent p-0">
                         <span class="font-serif text-xl text-gray-400 ml-2 italic">kr</span>
                     </div>
                     <div class="input-line"></div>
@@ -218,6 +225,58 @@
     </div>
 
     <script>
+        const presets = {
+            'tesla-y': {
+                price: 650000, // Base Model RWD approx
+                tax: 30,      // EV tax (360 kr/year)
+                insurance: 800, // Halvförsäkring (new car warranty)
+                service: 3000,   // Low maintenance + tires
+                years: 3,
+                retained: 55,    // High resale value
+                interest: 6.0    // Current market rate
+            },
+            'volvo-xc60': {
+                price: 780000,   // Recharge Plus approx
+                tax: 30,         // Hybrid tax
+                insurance: 600,  // Volvia halvförsäkring
+                service: 5000,   // Annual service
+                years: 3,
+                retained: 52,
+                interest: 6.0
+            },
+            'tesla-3': {
+                price: 540000,   // Model 3 RWD
+                tax: 30,
+                insurance: 850,  // Halvförsäkring
+                service: 3000,
+                years: 3,
+                retained: 53,
+                interest: 6.0
+            }
+        };
+
+        function loadPreset(model) {
+            const data = presets[model];
+            if (!data) return;
+
+            const setInput = (id, value) => {
+                const el = document.getElementById(id);
+                el.value = formatSwedishNumber(value);
+                resizeInput(el);
+            };
+
+            setInput('carPrice', data.price);
+            setInput('monthlyTax', data.tax);
+            setInput('monthlyInsurance', data.insurance);
+            setInput('yearlyService', data.service);
+            
+            document.getElementById('ownershipYears').value = data.years;
+            document.getElementById('retainedValue').value = data.retained;
+            document.getElementById('interestRate').value = data.interest;
+
+            calculateCosts();
+        }
+
         function formatSwedishNumber(num) {
             if (isNaN(num) || num === 0) return '0';
             const rounded = Math.round(num);
@@ -271,6 +330,44 @@
             }
         }
         
+        function resizeInput(input) {
+            let hiddenSpan = document.getElementById(input.id + '-measure');
+            if (!hiddenSpan) {
+                hiddenSpan = document.createElement('span');
+                hiddenSpan.id = input.id + '-measure';
+                hiddenSpan.style.visibility = 'hidden';
+                hiddenSpan.style.position = 'absolute';
+                hiddenSpan.style.whiteSpace = 'pre';
+                hiddenSpan.style.height = '0';
+                hiddenSpan.style.overflow = 'hidden';
+                
+                // Copy relevant font styles
+                const style = window.getComputedStyle(input);
+                hiddenSpan.style.fontFamily = style.fontFamily;
+                hiddenSpan.style.fontSize = style.fontSize;
+                hiddenSpan.style.fontWeight = style.fontWeight;
+                hiddenSpan.style.fontStyle = style.fontStyle;
+                hiddenSpan.style.letterSpacing = style.letterSpacing;
+                hiddenSpan.style.textTransform = style.textTransform;
+                
+                document.body.appendChild(hiddenSpan);
+            }
+            // Use placeholder if value is empty, but we want the cursor to be visible 
+            // so min width should be small.
+            // If empty, we show placeholder. But placeholder width matters if we want 
+            // placeholder to be fully visible? 
+            // Actually, usually we just want it to fit the content. 
+            // If empty, width should maybe be width of placeholder or just small?
+            // Let's make it fit content (value) or placeholder if value is empty?
+            // If value is empty, input shows placeholder.
+            const text = input.value || input.placeholder || '';
+            hiddenSpan.textContent = text;
+            
+            // Add a small buffer for cursor and to prevent jitter
+            const width = hiddenSpan.offsetWidth + 10; 
+            input.style.width = width + 'px';
+        }
+
         function formatNumberInput(input) {
             let cursorPos = input.selectionStart;
             let oldValue = input.value;
@@ -308,7 +405,21 @@
                     input.setSelectionRange(newPos, newPos);
                 }
             }
+            
+            resizeInput(input);
         }
+
+        document.querySelectorAll('input').forEach(input => {
+            // Initialize size
+            resizeInput(input);
+            
+            // Add generic listener for non-formatted inputs (like percentage/years)
+            input.addEventListener('input', function() {
+                if (this.id === 'ownershipYears' || this.id === 'retainedValue' || this.id === 'interestRate') {
+                     resizeInput(this);
+                }
+            });
+        });
 
         document.getElementById('carPrice').addEventListener('input', function() {
             formatNumberInput(this);
